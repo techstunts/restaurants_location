@@ -62,7 +62,8 @@ class RestaurantController extends Controller
                   And lon Between $minLon And $maxLon
             ) As FirstCut
             Where acos(sin($lat)*sin(radians(lat)) + cos($lat)*cos(radians(lat))*cos(radians(lon)-$lon)) * $R < $rad
-            Order by distance";
+            Order by distance
+            Limit 0, 5";
 
         $restaurants2 = DB::select($sql2);
 
