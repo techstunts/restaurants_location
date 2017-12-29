@@ -11,8 +11,6 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-    return $app->version();
-});
+$app->get('/', 'IndexController@get');
 
 $app->get('/api/v1/restaurant', 'RestaurantController@get');

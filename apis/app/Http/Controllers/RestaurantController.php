@@ -29,7 +29,7 @@ class RestaurantController extends Controller
 
 
         $sql = "Select id, name, lat, lon,
-                   acos(sin(:lat)*sin(radians(lat)) + cos(:lat)*cos(radians(lat))*cos(radians(lon)-:lon)) * :R As D
+                   acos(sin(:lat)*sin(radians(lat)) + cos(:lat)*cos(radians(lat))*cos(radians(lon)-:lon)) * :R As distance
             From (
                 Select id, name, lat, lon
                 From restaurants
@@ -37,7 +37,7 @@ class RestaurantController extends Controller
                   And lon Between :minLon And :maxLon
             ) As FirstCut
             Where acos(sin(:lat)*sin(radians(lat)) + cos(:lat)*cos(radians(lat))*cos(radians(lon)-:lon)) * :R < :rad
-            Order by D";
+            Order by distance";
 
         $params = [
             'lat' => deg2rad($lat),
@@ -54,7 +54,7 @@ class RestaurantController extends Controller
         $lon = deg2rad($lon);
 
         $sql2 = "Select id, name, lat, lon,
-                   acos(sin($lat)*sin(radians(lat)) + cos($lat)*cos(radians(lat))*cos(radians(lon)-$lon)) * $R As D
+                   acos(sin($lat)*sin(radians(lat)) + cos($lat)*cos(radians(lat))*cos(radians(lon)-$lon)) * $R As distance
             From (
                 Select id, name, lat, lon
                 From restaurants
@@ -62,7 +62,7 @@ class RestaurantController extends Controller
                   And lon Between $minLon And $maxLon
             ) As FirstCut
             Where acos(sin($lat)*sin(radians(lat)) + cos($lat)*cos(radians(lat))*cos(radians(lon)-$lon)) * $R < $rad
-            Order by D";
+            Order by distance";
 
         $restaurants2 = DB::select($sql2);
 
