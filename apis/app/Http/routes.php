@@ -13,4 +13,4 @@
 
 $app->get('/', 'IndexController@get');
 
-$app->get('/api/v1/restaurant', 'RestaurantController@get');
+$app->get('/api/v1/restaurant', 'Api\RestaurantController@get');

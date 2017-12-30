@@ -7,6 +7,4 @@ class Restaurant extends Model
 {
     protected $table = 'restaurants';
 
-    protected $primaryKey = 'id';
-
 }

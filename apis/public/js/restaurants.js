@@ -19,26 +19,34 @@ function findRestaurants(){
     document.getElementById('restaurants_list').style.display = 'block';
 
     fetchUrl(restaurantsApiUrl, function(data) {
-        var obj = JSON.parse(data);
-        var row = "";
-        var destinations = [];
+        try {
+            var obj = JSON.parse(data);
+            var row = "";
+            var destinations = [];
 
-        if(obj.length) {
-            for (i in obj) {
-                row += "<tr><td>" + (parseInt(i) + 1) +
-                    "</td><td>" + obj[i].name +
-                    "</td><td>" + obj[i].lat +
-                    "</td><td>" + obj[i].lon +
-                    "</td><td>" + Math.round(parseFloat(obj[i].distance) * 100) / 100 + ' km' +
-                    "</td><td class=\'distance_google\'>Loading ..." +
-                    "</td><td class=\'timetotravel\'>Loading ..." +
-                    "</td></tr>";
+            if(obj.status == "OK" && obj.results.length) {
 
-                destinations.push({lat: obj[i].lat, lng: obj[i].lon});
+                for (i in obj.results) {
+                    row += "<tr><td>" + (parseInt(i) + 1) +
+                        "</td><td>" + obj.results[i].name +
+                        "</td><td>" + obj.results[i].lat +
+                        "</td><td>" + obj.results[i].lon +
+                        "</td><td>" + Math.round(parseFloat(obj.results[i].distance) * 100) / 100 + ' km' +
+                        "</td><td class=\'distance_google\'>Loading ..." +
+                        "</td><td class=\'timetotravel\'>Loading ..." +
+                        "</td></tr>";
+
+                    destinations.push({lat: parseFloat(obj.results[i].lat), lng: parseFloat(obj.results[i].lon)});
+                }
             }
-        }
-        else{
-            row = "<tr><td colspan='5'>No restaurants found</td></tr>";
+            else{
+                if(obj.status == "NOTOK")
+                    row = "<tr><td colspan='7' class='alert alert-danger'>" + obj.message + "</td></tr>";
+                else
+                    row = "<tr><td colspan='7' class='alert alert-danger'>Unknown error!!</td></tr>";
+            }
+        } catch (e) {
+            row = "<tr><td colspan='7' class='alert alert-danger'>Unknown error!!</td></tr>";
         }
 
         document.getElementById('restaurants_list').insertAdjacentHTML('beforeend',row);
@@ -70,6 +78,7 @@ function findRestaurants(){
             });
 
         }
+
 
     });
 
