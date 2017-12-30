@@ -1,7 +1,7 @@
 /**
  * Created by amit on 29/12/17.
  */
-function init(){
+function initLocationFinder(){
     document.getElementById("findBtn").onclick = findRestaurants;
 }
 
