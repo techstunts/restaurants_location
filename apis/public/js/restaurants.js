@@ -6,8 +6,8 @@ function init(){
 }
 
 function findRestaurants(){
-    var lat = document.getElementById('lat').value;
-    var lon = document.getElementById('lon').value;
+    var lat = parseFloat(document.getElementById('lat').value);
+    var lon = parseFloat(document.getElementById('lon').value);
     var rad = document.getElementById('rad').value;
     var restaurantsApiUrl = 'api/v1/restaurant?lat=' + lat + '&lon=' + lon + '&rad=' + rad;
     var items = document.getElementById('restaurants_list').getElementsByTagName('tbody');
@@ -16,10 +16,12 @@ function findRestaurants(){
         items[0].remove();
     }
 
+    document.getElementById('restaurants_list').style.display = 'block';
+
     fetchUrl(restaurantsApiUrl, function(data) {
         var obj = JSON.parse(data);
         var row = "";
-        var destinationCoords = '';
+        var destinations = [];
 
         if(obj.length) {
             for (i in obj) {
@@ -28,10 +30,11 @@ function findRestaurants(){
                     "</td><td>" + obj[i].lat +
                     "</td><td>" + obj[i].lon +
                     "</td><td>" + Math.round(parseFloat(obj[i].distance) * 100) / 100 +
-                    "</td><td>" +
+                    "</td><td class=\'distance_google\'>Loading ..." +
+                    "</td><td class=\'timetotravel\'>Loading ..." +
                     "</td></tr>";
 
-                destinationCoords += obj[i].lat + ',' + obj[i].lon + '|';
+                destinations.push({lat: obj[i].lat, lng: obj[i].lon});
             }
         }
         else{
@@ -40,29 +43,35 @@ function findRestaurants(){
 
         document.getElementById('restaurants_list').insertAdjacentHTML('beforeend',row);
 
-        if(destinationCoords.length){
+        if(destinations.length){
 
-            var distanceApiUrl = 'http://maps.googleapis.com/maps/api/distancematrix/json?origins=' +
-                lat + ',' + lon +
-                '&destinations=' +
-                destinationCoords.slice(0, -1) +
-                '&mode=driving';
-
-            fetchUrl(distanceApiUrl, function(data){
-                var obj = JSON.parse(data);
-                console.log(obj);
+            var service = new google.maps.DistanceMatrixService;
+            service.getDistanceMatrix({
+                origins: [{lat: lat, lng: lon}],
+                destinations: destinations,
+                travelMode: 'DRIVING',
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+            }, function(response, status) {
+                if (status !== 'OK') {
+                    alert('Error was: ' + status);
+                } else {
+                    var originList = response.originAddresses;
+                    var destinationList = response.rows[0].elements;
+                    var distance_google_tds = document.getElementsByClassName('distance_google');
+                    var time_tds = document.getElementsByClassName('timetotravel');
+                    for(j in destinationList){
+                        distance_google_tds[j].innerHTML = destinationList[j].distance.text;
+                        time_tds[j].innerHTML = destinationList[j].duration.text;
+                    }
+                }
 
             });
 
-            console.log(distanceApiUrl);
         }
 
-
     });
-
-
-
-    //fetchUrl()
 
 }
 
