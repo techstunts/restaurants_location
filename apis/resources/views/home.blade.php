@@ -35,7 +35,7 @@
                             <div class="col-sm-8">
                                 <select name="rad" id="rad" class="form-control">
                                     <option value="1">1</option>
-                                    <option value="5">5</option>
+                                    <option value="5" selected="true">5</option>
                                     <option value="10">10</option>
                                     <option value="20">20</option>
                                     <option value="30">30</option>
@@ -68,7 +68,7 @@
                             <th>Restaurant</th>
                             <th>Latitude</th>
                             <th>Longitude</th>
-                            <th>Arial Distance by Algo(kms)</th>
+                            <th>Arial Distance by Algo</th>
                             <th>On Road Distance by Google API</th>
                             <th>Time to travel by Google API</th>
                             </thead>

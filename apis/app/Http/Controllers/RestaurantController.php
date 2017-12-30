@@ -35,7 +35,7 @@ class RestaurantController extends Controller
                 From restaurants
                 Where lat Between :minLat And :maxLat
                   And lon Between :minLon And :maxLon
-            ) As FirstCut
+            ) As BoundingBox
             Where acos(sin(:lat)*sin(radians(lat)) + cos(:lat)*cos(radians(lat))*cos(radians(lon)-:lon)) * :R < :rad
             Order by distance";
 
@@ -55,15 +55,14 @@ class RestaurantController extends Controller
 
         $sql2 = "Select id, name, lat, lon,
                    acos(sin($lat)*sin(radians(lat)) + cos($lat)*cos(radians(lat))*cos(radians(lon)-$lon)) * $R As distance
-            From (
-                Select id, name, lat, lon
-                From restaurants
+            From restaurants
                 Where lat Between $minLat And $maxLat
                   And lon Between $minLon And $maxLon
-            ) As FirstCut
-            Where acos(sin($lat)*sin(radians(lat)) + cos($lat)*cos(radians(lat))*cos(radians(lon)-$lon)) * $R < $rad
+                  And acos(sin($lat)*sin(radians(lat)) + cos($lat)*cos(radians(lat))*cos(radians(lon)-$lon)) * $R < $rad
             Order by distance
-            Limit 0, 5";
+            Limit 0, 10";
+
+        //echo $sql2;
 
         $restaurants2 = DB::select($sql2);
 

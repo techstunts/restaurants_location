@@ -29,7 +29,7 @@ function findRestaurants(){
                     "</td><td>" + obj[i].name +
                     "</td><td>" + obj[i].lat +
                     "</td><td>" + obj[i].lon +
-                    "</td><td>" + Math.round(parseFloat(obj[i].distance) * 100) / 100 +
+                    "</td><td>" + Math.round(parseFloat(obj[i].distance) * 100) / 100 + ' km' +
                     "</td><td class=\'distance_google\'>Loading ..." +
                     "</td><td class=\'timetotravel\'>Loading ..." +
                     "</td></tr>";
