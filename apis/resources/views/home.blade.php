@@ -34,12 +34,12 @@
                             <label class="control-label col-sm-4" for="lon">Radius:</label>
                             <div class="col-sm-8">
                                 <select name="rad" id="rad" class="form-control">
-                                    <option value="1">1</option>
-                                    <option value="5" selected="true">5</option>
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="30">30</option>
-                                    <option value="50">50</option>
+                                    <option value="1">1 km</option>
+                                    <option value="5" selected="true">5 km</option>
+                                    <option value="10">10 km</option>
+                                    <option value="20">20 km</option>
+                                    <option value="30">30 km</option>
+                                    <option value="50">50 km</option>
                                 </select>
                             </div>
                         </div>

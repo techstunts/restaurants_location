@@ -6,11 +6,14 @@ function initLocationFinder(){
 }
 
 function findRestaurants(){
-    var lat = parseFloat(document.getElementById('lat').value);
-    var lon = parseFloat(document.getElementById('lon').value);
+    var lat = document.getElementById('lat').value;
+    var lon = document.getElementById('lon').value;
     var rad = document.getElementById('rad').value;
-    var restaurantsApiUrl = 'api/v1/restaurant?lat=' + lat + '&lon=' + lon + '&rad=' + rad;
+    var restaurantsApiUrl = 'api/v1/restaurants?lat=' + lat + '&lon=' + lon + '&rad=' + rad;
     var items = document.getElementById('restaurants_list').getElementsByTagName('tbody');
+
+    lat = parseFloat(lat);
+    lon = parseFloat(lon);
 
     while(items.length > 0) {
         items[0].remove();

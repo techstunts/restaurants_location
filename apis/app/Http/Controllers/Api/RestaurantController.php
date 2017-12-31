@@ -28,7 +28,7 @@ class RestaurantController extends Controller
                 'status' => 'NOTOK',
                 'message' => $messages
             ];
-            return response()->json($error);
+            return response()->json($error, 400);
         }
 
         $lat = $request->input('lat');
@@ -43,14 +43,16 @@ class RestaurantController extends Controller
                 'status' => 'OK',
                 'results' => $results
             ];
+            $status_code = 200;
         }
         else{
             $response = [
                 'status' => 'NOTOK',
                 'message' => 'NO DATA FOUND'
             ];
+            $status_code = 404;
         }
-        return response()->json($response);
+        return response()->json($response, $status_code);
     }
 
 
