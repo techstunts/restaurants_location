@@ -81,7 +81,7 @@
     </div>
 
     <script src="{!! url('js/restaurants.js') !!}" ></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWQRqOfTX8rq8XTK2kHCKJydM6R55gbd0&callback=initLocationFinder"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_DISTANCE_API_KEY')}}&callback=initLocationFinder"></script>
 
 </body>
 
