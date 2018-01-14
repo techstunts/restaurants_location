@@ -9,11 +9,10 @@ function findRestaurants(){
     var lat = document.getElementById('lat').value;
     var lon = document.getElementById('lon').value;
     var rad = document.getElementById('rad').value;
+    var traveltimetype = document.querySelector('input[name = "traveltimetype"]:checked').value;
     var restaurantsApiUrl = 'api/v1/restaurants?lat=' + lat + '&lon=' + lon + '&rad=' + rad;
     var items = document.getElementById('restaurants_list').getElementsByTagName('tbody');
-
-    lat = parseFloat(lat);
-    lon = parseFloat(lon);
+    var origin = {lat: parseFloat(lat), lng: parseFloat(lon)};
 
     while(items.length > 0) {
         items[0].remove();
@@ -37,6 +36,9 @@ function findRestaurants(){
                         "</td><td>" + Math.round(parseFloat(obj.results[i].distance) * 100) / 100 + ' km' +
                         "</td><td class=\'distance_google\'>Loading ..." +
                         "</td><td class=\'timetotravel\'>Loading ..." +
+                        "</td><td class=\'timetotravel_bestguess\'>" +
+                        "</td><td class=\'timetotravel_pessimistic\'>" +
+                        "</td><td class=\'timetotravel_optimistic\'>" +
                         "</td></tr>";
 
                     destinations.push({lat: parseFloat(obj.results[i].lat), lng: parseFloat(obj.results[i].lon)});
@@ -58,12 +60,17 @@ function findRestaurants(){
 
             var service = new google.maps.DistanceMatrixService;
             service.getDistanceMatrix({
-                origins: [{lat: lat, lng: lon}],
+                origins: [origin],
                 destinations: destinations,
                 travelMode: 'DRIVING',
                 unitSystem: google.maps.UnitSystem.METRIC,
                 avoidHighways: false,
-                avoidTolls: false
+                avoidTolls: false,
+                drivingOptions: {
+                    departureTime: new Date(Date.now()), //Math.round(new Date().getTime()/1000),
+                    trafficModel: traveltimetype
+                }
+
             }, function(response, status) {
                 if (status !== 'OK') {
                     alert('Error was: ' + status);
@@ -72,9 +79,11 @@ function findRestaurants(){
                     var destinationList = response.rows[0].elements;
                     var distance_google_tds = document.getElementsByClassName('distance_google');
                     var time_tds = document.getElementsByClassName('timetotravel');
+                    var traffic_time_tds = document.getElementsByClassName('timetotravel_' + traveltimetype);
                     for(j in destinationList){
                         distance_google_tds[j].innerHTML = destinationList[j].distance.text;
                         time_tds[j].innerHTML = destinationList[j].duration.text;
+                        traffic_time_tds[j].innerHTML = destinationList[j].duration_in_traffic.text;
                     }
                 }
 
