@@ -20,7 +20,7 @@ class RestaurantMapper
      *
      * @return ModelCollection Restaurants fetchedfrom database
      */
-    public function getRestaurantsByLatLon($lat, $lon, $rad = 5)
+    public function getRestaurantsByLatLon($lat, $lon, $count, $rad = 5)
     {
         $scaling = 10000000;
 
@@ -35,16 +35,19 @@ class RestaurantMapper
         $lat = deg2rad($lat);
         $lon = deg2rad($lon);
 
+        DB::enableQueryLog();
         $results =  Restaurant::select('id', 'name', 'lat_d as lat','lon_d as lon',
             DB::raw("(acos(sin($lat)*sin(radians(lat_d)) + cos($lat)*cos(radians(lat_d))*cos(radians(lon_d)-$lon)) * $R) As distance")
             )
             ->whereBetween('lat', [$minLat, $maxLat])
             ->whereBetween('lon', [$minLon, $maxLon])
             ->where(DB::raw("(acos(sin($lat)*sin(radians(lat_d)) + cos($lat)*cos(radians(lat_d))*cos(radians(lon_d)-$lon)) * $R)"), "<", $rad)
-            ->orderBy('distance')
-            ->limit(20)
+            ->orderBy('distance', 'desc')
+            ->limit($count)
             ->get();
-
+//        dd(
+//            DB::getQueryLog()
+//        );
         return $results;
 
     }

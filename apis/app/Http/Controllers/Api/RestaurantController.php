@@ -17,6 +17,7 @@ class RestaurantController extends Controller
             'lat' => 'numeric|min:-90|max:90',
             'lon' => 'numeric|min:-180|max:180',
             'rad' => 'numeric|min:0|max:2000',
+            'count' => 'numeric|min:1|max:250'
         ]);
         if ($validator->fails()) {
             $messages = '';
@@ -33,10 +34,11 @@ class RestaurantController extends Controller
 
         $lat = $request->input('lat');
         $lon = $request->input('lon');
-        $rad = $request->input('rad');; // radius of bounding circle in kilometers
+        $rad = $request->input('rad'); // radius of bounding circle in kilometers
+        $count = $request->has('count') ? $request->input('count') : 20;
 
         $restaurantMapper = new RestaurantMapper();
-        $results = $restaurantMapper->getRestaurantsByLatLon($lat, $lon, $rad);
+        $results = $restaurantMapper->getRestaurantsByLatLon($lat, $lon, $count, $rad);
 
         if(count($results)){
             $response = [

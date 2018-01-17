@@ -59,6 +59,19 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="control-label col-sm-4" for="lon">No of restaurants:</label>
+                            <div class="col-sm-8">
+                                <select name="count" id="count" class="form-control">
+                                    <option value="10">10</option>
+                                    <option value="25" selected="true">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="500">500</option>
+                                    <option value="1000">1000</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label col-sm-4" for="lon">Real time to travel:</label>
                             <div class="col-sm-8">
                                 <label class="radio-inline"><input type="radio" name="traveltimetype" value="bestguess" checked>Best Guess</label><br/>
@@ -67,8 +80,16 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <input class="btn btn-default" type="button" name="submit" id="findBtn" value="Find restaurants">
+                            <label class="control-label col-sm-4" for="lon">Find restaurants:</label>
+                            <div class="col-sm-8">
+                                <input class="btn btn-default" type="button" name="submit" id="findBtn" value="From backend">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="lon">Find Time to Travel:</label>
+                            <div class="col-sm-8">
+                                <input class="btn btn-default" type="button" name="timeBackendSubmit" id="timeBackendBtn" value="From backend">
+                                <input class="btn btn-default" type="button" name="timeFrontendSubmit" id="timeFrontendBtn" value="From frontend">
                             </div>
                         </div>
 
