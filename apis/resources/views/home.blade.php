@@ -18,6 +18,9 @@
             line-height: 19px;
             color: white;
         }
+        #div_timestamps i{
+            color:red;
+        }
     </style>
 
 </head>
@@ -96,7 +99,7 @@
                     </form>
 
                 </div>
-                <div class="col-sm-4 sidenav">
+                <div class="col-sm-4 sidenav" id="div_timestamps">
                 </div>
             </div>
 

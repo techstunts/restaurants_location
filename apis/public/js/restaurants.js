@@ -67,6 +67,52 @@ function findRestaurants(){
 
 }
 
+
+function getTimeToTravelFromBackend(origin, destinations){
+    return function (){
+        if(destinations.length){
+            var traveltimetype = document.querySelector('input[name = "traveltimetype"]:checked').value;
+            
+            var div_timestamps = document.getElementById('div_timestamps');
+            div_timestamps.innerHTML = "";
+
+            var service = new google.maps.DistanceMatrixService;
+
+            $.post("http://localhost:3000",
+                {
+                    origins: JSON.stringify([origin]),
+                    destinations: JSON.stringify(destinations),
+                    trafficModel: traveltimetype
+                },
+                function(data, status){
+                    console.log(status);
+                    console.log(JSON.parse(data));
+
+                    if (status !== 'success') {
+                        alert('Error was: ' + status);
+                    } else {
+                        var destinationList = JSON.parse(data).results;
+                        var distance_google_tds = document.getElementsByClassName('distance_google');
+                        var time_tds = document.getElementsByClassName('timetotravel');
+                        var traffic_time_tds = document.getElementsByClassName('timetotravel_' + traveltimetype);
+                        for(j in destinationList){
+                            distance_google_tds[j].innerHTML = destinationList[j].distance.text;
+                            time_tds[j].innerHTML = destinationList[j].duration.text;
+                            traffic_time_tds[j].innerHTML = destinationList[j].duration_in_traffic.text;
+                        }
+
+                        tss = JSON.parse(data).timestamps;
+                        for(k in tss){
+                            div_timestamps.innerHTML += tss[k] + "<br />";
+                        }
+                    }
+                }
+            );
+        }
+    }
+};
+
+
 function getTimeToTravelFromFrontend(origin, destinations){
     return function (){
         if(destinations.length){
@@ -99,6 +145,10 @@ function getTimeToTravelFromFrontend(origin, destinations){
                         time_tds[j].innerHTML = destinationList[j].duration.text;
                         traffic_time_tds[j].innerHTML = destinationList[j].duration_in_traffic.text;
                     }
+
+                    var div_timestamps = document.getElementById('div_timestamps');
+                    div_timestamps.innerHTML = "";
+
                 }
 
             });

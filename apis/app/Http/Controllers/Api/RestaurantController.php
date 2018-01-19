@@ -17,7 +17,7 @@ class RestaurantController extends Controller
             'lat' => 'numeric|min:-90|max:90',
             'lon' => 'numeric|min:-180|max:180',
             'rad' => 'numeric|min:0|max:2000',
-            'count' => 'numeric|min:1|max:250'
+            'count' => 'numeric|min:1|max:1200'
         ]);
         if ($validator->fails()) {
             $messages = '';
